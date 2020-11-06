@@ -31,12 +31,12 @@ router.get('/:productId', async (request, response) => {
     }
 })
 
-router.post('/', (request, response) => {
+router.post('/', (request, response,next) => {
     const { body: product } = request
     try {
-        const product = productService.createProduct({ product })
+        const productCreated = productService.createProduct({ product })
         response.status(201).json({
-            data: product,
+            data: productCreated,
             message: 'products created',
         })
     } catch (error) {
