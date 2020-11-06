@@ -4,9 +4,10 @@ const ProductsService = require('../../services/products')
 
 const productService = new ProductsService()
 
-router.get('/', async (request, response) => {
+router.get('/', async (request, response, next) => {
     const { tags } = request.query
     try {
+        throw new Error('This is an Error from the Api')
         const products = await productService.getProducts({ tags })
 
         response.status(200).json({
@@ -14,11 +15,11 @@ router.get('/', async (request, response) => {
             message: 'products listed',
         })
     } catch (error) {
-        next(err)
+        next(error)
     }
 })
 
-router.get('/:productId', async (request, response) => {
+router.get('/:productId', async (request, response, next) => {
     const { productId } = request.params
     try {
         const product = await productService.getProduct({ productId })
@@ -31,7 +32,7 @@ router.get('/:productId', async (request, response) => {
     }
 })
 
-router.post('/', (request, response,next) => {
+router.post('/', (request, response, next) => {
     const { body: product } = request
     try {
         const productCreated = productService.createProduct({ product })
@@ -44,7 +45,7 @@ router.post('/', (request, response,next) => {
     }
 })
 
-router.put('/:productId', (request, response) => {
+router.put('/:productId', (request, response, next ) => {
     const { productId } = request.params
     const { body: product } = request
     try {
@@ -58,7 +59,7 @@ router.put('/:productId', (request, response) => {
     }
 })
 
-router.delete('/:productId', (request, response) => {
+router.delete('/:productId', (request, response , next) => {
     const { productId } = request.params
     try {
         const product = productService.deleteProduct({ productId })
